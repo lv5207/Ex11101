@@ -10,6 +10,13 @@ import android.widget.RadioGroup;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+/**
+ * @author Lavi Vainer
+ * @version 1.0
+ * @since 27/11/2026
+ *
+ * An activity for receiving series data from the user.
+ */
 public class MainActivity extends AppCompatActivity {
 
 EditText etStep;
@@ -35,13 +42,21 @@ Button btnViewSeries;
 
         btnViewSeries.setOnClickListener(new View.OnClickListener() {
             @Override
+
+            /**
+             * Get the data and send it to the other activity.
+             * @param view The view which was clicked
+             */
             public void onClick(View view) {
-                String chosenBase = whichChecked();
-                if(chosenBase.equals("NONE"))
+
+                // Which base was chosen by the user? If none, don't send the data
+                int chosenBase = whichChecked();
+                if(chosenBase == -1)
                 {
                     return;
                 }
 
+                // If the numbers for the series are invalid, don't send the data
                 int step, firstTerm;
                 if(isFieldInvalid(etStep) || isFieldInvalid(etFirstTerm))
                 {
@@ -57,11 +72,19 @@ Button btnViewSeries;
                 si.putExtra("step", step);
                 startActivity(si);
 
+                // After the user decides to go back to this activity, clear their previous choices
                 rgBases.clearCheck();
+                etStep.setText("");
+                etFirstTerm.setText("");
             }
         });
     }
 
+    /**
+     * Check if a user's input (which should be an integer) is invalid
+     * @param et The EditText containing the input
+     * @return True if the field is invalid, false if valid
+     */
     private boolean isFieldInvalid(EditText et)
     {
         String t = et.getText().toString();
@@ -76,20 +99,15 @@ Button btnViewSeries;
         }
     }
 
-    private String whichChecked()
+    /**
+     * Get the user's chosen base
+     * @return The user's chosen base
+     */
+    private int whichChecked()
     {
-        if(rbBinary.isChecked())
-        {
-            return "BINARY";
-        }
-        else if(rbDecimal.isChecked())
-        {
-            return "DECIMAL";
-        }
-        else if(rbHex.isChecked())
-        {
-            return "HEXADECIMAL";
-        }
-        return "NONE";
+        if(rbBinary.isChecked()) return 2;
+        if(rbDecimal.isChecked()) return 10;
+        if(rbHex.isChecked()) return 16;
+        return -1;
     }
 }

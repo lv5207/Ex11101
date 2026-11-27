@@ -11,6 +11,13 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+/**
+ * @author Lavi Vainer
+ * @version 1.0
+ * @since 27/11/2026
+ *
+ * An activity for displaying the series built on the user's input along with each term's information
+ */
 public class SeriesActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 ListView lvSeries;
 TextView tvInfo;
@@ -28,10 +35,9 @@ int base;
         btnBack = findViewById(R.id.btnBack);
 
         Intent gi = getIntent();
-        String baseStr = gi.getStringExtra("base");
+        base = gi.getIntExtra("base", 10);
         int firstTerm = gi.getIntExtra("first", 0);
         int step = gi.getIntExtra("step", 1);
-        base = getBaseFromString(baseStr);
 
         series = generateSeries(firstTerm, step, base);
 
@@ -43,6 +49,11 @@ int base;
 
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
+
+            /**
+             * Finish the intent and go back to the previous activity once the button is clicked
+             * @param view The view which was clicked
+             */
             public void onClick(View view) {
                 finish();
             }
@@ -50,13 +61,13 @@ int base;
 
     }
 
-    private int getBaseFromString(String base)
-    {
-        if(base.equals("BINARY")) return 2;
-        if(base.equals("DECIMAL")) return 10;
-        return 16;
-    }
-
+    /**
+     * Generate a series of 20 elements based on the user's input
+     * @param first The first term in the series
+     * @param step The step between each term
+     * @param base The base in which the numbers are displayed
+     * @return A string array containing said 20 elements
+     */
     private String[] generateSeries(int first, int step, int base)
     {
         String[] series = new String[20];
@@ -67,6 +78,13 @@ int base;
         return series;
     }
 
+    /**
+     * Display the chosen term's information
+     * @param adapterView The ListView which was clicked
+     * @param view The row which was clicked
+     * @param i The index of the chosen term
+     * @param l The ID of the row in the list
+     */
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         String info = "";
