@@ -16,6 +16,7 @@ ListView lvSeries;
 TextView tvInfo;
 Button btnBack;
 String[] series;
+int base;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +31,7 @@ String[] series;
         String baseStr = gi.getStringExtra("base");
         int firstTerm = gi.getIntExtra("first", 0);
         int step = gi.getIntExtra("step", 1);
-        int base = getBaseFromString(baseStr);
+        base = getBaseFromString(baseStr);
 
         series = generateSeries(firstTerm, step, base);
 
@@ -69,13 +70,13 @@ String[] series;
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         String info = "";
-        int n = Integer.parseInt(series[i]);
+        int n = Integer.parseInt(series[i], base);
+
         info += "Binary: " + Integer.toString(n, 2);
         info += "\nDecimal: " + Integer.toString(n, 10);
         info += "\nHexadecimal: " + Integer.toString(n, 16);
-        info += "\nThe term is ";
-        info += n % 2 == 0 ? "even" : "odd";
-        info += "Number of set bits: " + Integer.bitCount(n);
+        info += "\nThe term is " + (n % 2 == 0 ? "even" : "odd");
+        info += "\nNumber of set bits: " + Integer.bitCount(n);
         tvInfo.setText(info);
     }
 }
