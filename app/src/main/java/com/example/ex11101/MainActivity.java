@@ -1,5 +1,6 @@
 package com.example.ex11101;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -49,6 +50,14 @@ Button btnViewSeries;
 
                 step = Integer.parseInt(etStep.getText().toString());
                 firstTerm = Integer.parseInt(etFirstTerm.getText().toString());
+
+                Intent si = new Intent(MainActivity.this, SeriesActivity.class);
+                si.putExtra("base", chosenBase);
+                si.putExtra("first", firstTerm);
+                si.putExtra("step", step);
+                startActivity(si);
+
+                rgBases.clearCheck();
             }
         });
     }
